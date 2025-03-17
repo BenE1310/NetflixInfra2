@@ -1,0 +1,51 @@
+name: NetflixFrontend stack build-deploy
+
+on:
+  push:
+    branches: 
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout NetflixFrontend repo
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          IMAGE_NAME=bene1310/netflix-frontend
+          IMAGE_TAG=latest
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker push $IMAGE_NAME:$IMAGE_TAG
+
+      - name: Checkout infrastructure repo
+        uses: actions/checkout@v3
+        with:
+          repository: bene1310/NetflixInfra2.git  # Replace with your actual NetflixInfra repo
+          token: ${{ secrets.REPO_TOKEN }}  
+          path: ./NetflixInfra2
+
+      - name: Update Kubernetes YAML manifests
+        run: |
+          cd ./NetflixInfra2
+          DEPLOYMENT_FILE=./k8s/deployment-netflix-frontend.yaml  # Change path if needed
+          
+          # Update the image in the deployment file
+          sed -i "s|image: .*|image: bene1310/netflix-frontend:latest|" $DEPLOYMENT_FILE
+
+      - name: Commit and push changes
+        run: |
+          cd ./NetflixInfra2
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git add .
+          git commit -m "Update NetflixFrontend deployment image to latest"
+          git push origin main
