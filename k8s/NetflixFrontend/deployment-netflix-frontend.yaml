@@ -45,5 +45,5 @@ spec:
     app: netflix-frontend
   ports:
     - port: 3000
-      targetPort: 30000
+      targetPort: 3000
       nodePort: 30001  # Optional field, if not specified, the control plane will allocate a port from a range (default: 30000-32767)
