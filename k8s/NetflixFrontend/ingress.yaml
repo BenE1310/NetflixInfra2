@@ -1,0 +1,19 @@
+# k8s/ingress-demo.yaml
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: netflix-frontend
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: netflix-alb-k8s-61161915.eu-west-1.elb.amazonaws.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: netflix-frontend
+            port:
+              number: 3000
