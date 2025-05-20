@@ -3,10 +3,10 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: netflix-ingress
+  name: netflix-frontend
   namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  labels:
+    app.kubernetes.io/instance: netflix-frontend
 spec:
   ingressClassName: nginx
   rules:
@@ -27,4 +27,5 @@ spec:
                 name: netflix-service
                 port:
                   number: 3000
+
 
