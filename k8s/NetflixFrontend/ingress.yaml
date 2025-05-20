@@ -4,28 +4,16 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: netflix-frontend
-  namespace: default
-  labels:
-    app.kubernetes.io/instance: netflix-frontend
 spec:
   ingressClassName: nginx
   rules:
-    - host: netflix-alb-k8s-61161915.eu-west-1.elb.amazonaws.com
-      http:
-        paths:
-          - path: /status
-            pathType: Exact
-            backend:
-              service:
-                name: netflix-catalog-service
-                port:
-                  number: 8080
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: netflix-service
-                port:
-                  number: 3000
-
-
+  - host: netflix-alb-k8s-61161915.eu-west-1.elb.amazonaws.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: netflix-service
+            port:
+              number: 3000
