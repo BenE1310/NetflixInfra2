@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: netflix-alb-k8s-61161915.eu-west-1.elb.amazonaws.com
+  - host: bene-netflix.devops-int-college.com/
     http:
       paths:
       - path: /
