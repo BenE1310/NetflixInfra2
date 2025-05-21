@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: bene-netflix.devops-int-college.com/
+  - host: bene-netflix.devops-int-college.com
     http:
       paths:
       - path: /
